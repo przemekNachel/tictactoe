@@ -18,10 +18,6 @@ class Board:
         self.winner = None
         self.end = False
 
-    @staticmethod
-    def get_field_key(number):
-        return "f" + str(number)
-
     def get_board(self):
         return View.BOARD_TEMPLATE.format(**self.fields)
 
@@ -35,12 +31,14 @@ class Board:
             return View.CROSS
 
     def get_field(self, number):
-        return self.fields[self.get_field_key(number)]
+        return self.fields["f" + str(number)]
+
+    def set_field(self, number, value):
+        self.fields["f" + str(number)] = value
 
     def fill_field(self, number):
-        field_key = self.get_field_key(number)
-        if self.fields[field_key] == View.EMPTY:
-            self.fields[field_key] = self.get_sign()
+        if self.get_field(number) == View.EMPTY:
+            self.set_field(number, self.get_sign())
             self.check_winner()
             self.invert_sign()
 
